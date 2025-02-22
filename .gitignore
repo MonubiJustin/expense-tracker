@@ -1,0 +1,6 @@
+Backend/node_modules/
+frontend/.env
+Backend/.env
+
+# ignore logs and system files
+*.log
