@@ -8,7 +8,7 @@ const { validate } = require('../validation/register')
 router.post('/', async (req, res) => {
     try {
 
-        const { error } = await validate(req.body);
+        const { error } =  validate(req.body);
         if (error) return res.status(400).json(error.details[0].message);
 
         const { username, email, password } = req.body;
@@ -32,25 +32,17 @@ router.post('/', async (req, res) => {
 })
 
 
+router.get('/', async (req, res) => {
+    try {
 
+        const users = await User.find().sort('name');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        res.send(users);
+        
+    } catch (error) {
+        res.status(500).send("Internal Server Error")
+      console.log(error.message)  
+    }
+})
 
 module.exports = router;
