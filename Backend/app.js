@@ -4,12 +4,19 @@ const mongoose = require('mongoose')
 const cors = require('cors');
 const register = require('./routes/register')
 const login = require('./routes/login')
+const config = require('config');
 
 // middleware functions
 app.use(cors());
 app.use(express.json());
 app.use('/api/register', register);
 app.use('/api/login', login)
+
+// Configurations
+if (!config.get('jwtPrivateKey')) {
+    console.error('FATAL ERROR: jwtPrivateKey is not defined');
+    process.exit(1);
+}
 
 
 

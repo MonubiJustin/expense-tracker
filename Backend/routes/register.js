@@ -24,7 +24,8 @@ router.post('/', async (req, res) => {
         })
         await newUser.save();
 
-        res.status(201).json("User registered successfully")
+        const token = User.getAuthToken()
+        res.header('x-auth-token', token).status(201).json("User registered successfully")
     } catch (error) {
         res.status(500).json("Server error");
         console.log(error.message);

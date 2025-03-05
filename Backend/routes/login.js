@@ -4,6 +4,7 @@ const { User } = require('../models/register');
 const { validate } = require('../validation/login');
 const bcrypt = require('bcrypt');
 
+
 // login route
 router.post('/', async (req, res) => {
     try {
@@ -19,7 +20,8 @@ router.post('/', async (req, res) => {
         const passwordIsValid = bcrypt.compareSync(password, userExists.password);
         if (!passwordIsValid) return res.json("Invalid email or passoword");
 
-        res.json("Login successfull")
+        const token = userExists.getAuthToken();
+        res.header('x-auth-token', token).json("Login successfull")
 
     } catch (error) {
         res.status(500).json("Server Error");

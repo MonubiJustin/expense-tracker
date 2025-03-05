@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
+const config = require('config');
+const jwt = require('jsonwebtoken')
 
-const User = mongoose.model('user', new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -22,6 +24,14 @@ const User = mongoose.model('user', new mongoose.Schema({
         lowercase: true,
         match: [/\S+@\S+\.\S+/, "Please enter a valid email"]
     }
-}))
+})
+
+
+userSchema.methods.getAuthToken = function () {
+    const token = jwt.sign({ name: this.name, email: this.email }, config.get('jwtPrivateKey'));
+    return token;
+}
+
+const User = mongoose.model('user', userSchema)
 
 exports.User = User;
